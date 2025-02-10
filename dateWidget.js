@@ -13,11 +13,11 @@ class DateWidget {
         this.locale = options.locale || "fr"; // Localisation par défaut
         
         this.translations = {
-            fr: { from: "Depuis", to: "Jusqu'à", start: "Debut", end: "Fin", periods: { "1 mois": "1 mois", "3 mois": "3 mois", "dernier trimestre complet": "Dernier trimestre complet", "1 an": "1 an", "Tout": "Tout" } },
-            en: { from: "From", to: "To", start: "Start", end: "End", periods: { "1 mois": "1 month", "3 mois": "3 months", "dernier trimestre complet": "Last full quarter", "1 an": "1 year", "Tout": "All" } },
-            de: { from: "Von", to: "Bis", start: "Beginn", end: "Ende", periods: { "1 mois": "1 Monat", "3 mois": "3 Monate", "dernier trimestre complet": "Letztes volles Quartal", "1 an": "1 Jahr",  "Tout": "Alle" } },
-            es: { from: "Desde", to: "Hasta", start: "Inicio", end: "Fin", periods: { "1 mois": "1 mes", "3 mois": "3 meses", "dernier trimestre complet": "Último trimestre completo", "1 an": "1 año", "Tout": "Todo" } },
-            it: { from: "Da", to: "A", start: "Inizio", end: "Fine", periods: { "1 mois": "1 mese", "3 mois": "3 mesi", "dernier trimestre complet": "Ultimo trimestre completo", "1 an": "1 anno", "Tout": "Tutto" } }
+            fr: { from: "Depuis", to: "Jusqu'à", start: "Debut", end: "Fin", periods: { "1 mois": "1 mois", "3 mois": "3 mois", "dernier trimestre complet": "Dernier trimestre complet", "1 an": "1 an", "Tout": "Tout" }, err: "Ce bouton n'est pas prêt" },
+            en: { from: "From", to: "To", start: "Start", end: "End", periods: { "1 mois": "1 month", "3 mois": "3 months", "dernier trimestre complet": "Last full quarter", "1 an": "1 year", "Tout": "All" }, err: "This button is not ready"  },
+            de: { from: "Von", to: "Bis", start: "Beginn", end: "Ende", periods: { "1 mois": "1 Monat", "3 mois": "3 Monate", "dernier trimestre complet": "Letztes volles Quartal", "1 an": "1 Jahr",  "Tout": "Alle" }, err: "Diese Schaltfläche ist nicht bereit"  },
+            es: { from: "Desde", to: "Hasta", start: "Inicio", end: "Fin", periods: { "1 mois": "1 mes", "3 mois": "3 meses", "dernier trimestre complet": "Último trimestre completo", "1 an": "1 año", "Tout": "Todo" }, err: "Este botón no está listo"  },
+            it: { from: "Da", to: "A", start: "Inizio", end: "Fine", periods: { "1 mois": "1 mese", "3 mois": "3 mesi", "dernier trimestre complet": "Ultimo trimestre completo", "1 an": "1 anno", "Tout": "Tutto" }, err: "Questo pulsante non è pronto"  }
         };
         
         if (this.container) {
@@ -52,16 +52,16 @@ class DateWidget {
         labelFrom.textContent = this.labels.from + " : ";
         const inputFrom = document.createElement("input");
         inputFrom.type = "date";
-        inputFrom.name = `${this.idPrefix}_` + this.labels.start.toLowerCase();
-        inputFrom.id = `${this.idPrefix}_` + this.labels.start.toLowerCase();
+        inputFrom.name = `${this.idPrefix}_debut`;
+        inputFrom.id = `${this.idPrefix}_debut`;
 
         // Création du champ "Jusqu'à"
         const labelTo = document.createElement("label");
         labelTo.textContent = this.labels.to + " : ";
         const inputTo = document.createElement("input");
         inputTo.type = "date";
-        inputTo.name = `${this.idPrefix}_` + this.labels.end.toLowerCase();
-        inputTo.id = `${this.idPrefix}_` + this.labels.end.toLowerCase();
+        inputTo.name = `${this.idPrefix}_fin`;
+        inputTo.id = `${this.idPrefix}_fin`;
 
         // Ajout des inputs au conteneur
         dateContainer.appendChild(labelFrom);
@@ -118,8 +118,8 @@ class DateWidget {
      */
     placerLesDates(type) {
         const refDate = this.getReferenceDate();
-        const first = `#${this.idPrefix}_` + this.labels.start.toLowerCase();
-        const last = `#${this.idPrefix}_` + this.labels.end.toLowerCase();
+        const first = `#${this.idPrefix}_debut`;
+        const last = `#${this.idPrefix}_fin`;
         
         let lastDayOfMonth = new Date(refDate.getFullYear(), refDate.getMonth() + 1, 0);
         let formattedDate = (date) => date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
@@ -131,11 +131,6 @@ class DateWidget {
                 break;
             case "1 mois":
                 document.querySelector(first).value = formattedDate(refDate);
-                document.querySelector(last).value = formattedDate(lastDayOfMonth);
-                break;
-            case "3 mois":
-                let threeMonthsAgo = new Date(refDate.getFullYear(), refDate.getMonth() - 2, 1);
-                document.querySelector(first).value = formattedDate(threeMonthsAgo);
                 document.querySelector(last).value = formattedDate(lastDayOfMonth);
                 break;
             case "1 an":
@@ -151,7 +146,7 @@ class DateWidget {
                 document.querySelector(last).value = formattedDate(quarterEnd);
                 break;
             default:
-                alert("Ce bouton n'est pas prêt");
+                alert(this.labels.err);
         }
     }
 }
