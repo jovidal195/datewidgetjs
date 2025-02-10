@@ -133,6 +133,11 @@ class DateWidget {
                 document.querySelector(first).value = formattedDate(refDate);
                 document.querySelector(last).value = formattedDate(lastDayOfMonth);
                 break;
+			case "3 mois":
+                let threeMonthsAgo = new Date(refDate.getFullYear(), refDate.getMonth() - 2, 1);
+                document.querySelector(first).value = formattedDate(threeMonthsAgo);
+                document.querySelector(last).value = formattedDate(lastDayOfMonth);
+                break;
             case "1 an":
                 let oneYearAgoDate = new Date(refDate.getFullYear() - 1, refDate.getMonth() + 1, 1);
                 document.querySelector(first).value = formattedDate(oneYearAgoDate);
